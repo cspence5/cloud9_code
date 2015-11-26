@@ -1,31 +1,72 @@
-var util = require('util'),
-    OperationHelper = require('apac').OperationHelper;
+var amazon = require('amazon-product-api');
+var http = require('http');
+var express = require('express');
+var router = express();
+var server = http.createServer(router);
 
-var opHelper = new OperationHelper({
-    awsId:     'AKIAIIDSBRMGX3J6CM3A',
-    awsSecret: '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',
-    assocId:   'gettianemcom-20',
-    // xml2jsOptions: an extra, optional, parameter for if you want to pass additional options for the xml2js module. (see https://github.com/Leonidas-from-XIV/node-xml2js#options)
-    version:   '2013-08-01'
-    // your version of using product advertising api, default: 2013-08-01
+
+
+var client = amazon.createClient({
+  awsId: "AKIAIIDSBRMGX3J6CM3A",
+  awsSecret: "b51jo++Q3pYU/jbpIQWeZIH2BsAHesF2ZDx5LoXx",
+  awsTag: "gettianemcom-20"
 });
 
+router.get('/search/:category/:title/:pageamount',function(req, res) {
 
-// execute(operation, params, callback)
-// operation: select from http://docs.aws.amazon.com/AWSECommerceService/latest/DG/SummaryofA2SOperations.html
-// params: parameters for operation (optional)
-// callback(err, parsed, raw): callback function handling results. err = potential errors raised from xml2js.parseString() or http.request(). parsed = xml2js parsed response. raw = raw xml response.
+var category = req.params.category;   
+var title = req.params.title;
+var pageamount = req.params.pageamount;
 
-opHelper.execute('ItemSearch', {
-  'SearchIndex': 'Books',
-  'Keywords': 'harry potter',
+client.itemSearch({  
+  'SearchIndex': category,
+  'Title': title,
+  'ItemPage' : pageamount,
   'ResponseGroup': 'ItemAttributes,Images'
-}, function(err, results) { // you can add a third parameter for the raw xml response, "results" here are currently parsed using xml2js
-    console.log(results);
+}).then(function(results){
+  res.send(results)
+  //console.log(results);
+}).catch(function(err){
+  //console.log(err);
+ res.send(err);
+  
 });
 
-// output:
-// { ItemSearchResponse: 
-//    { '$': { xmlns: 'http://webservices.amazon.com/AWSECommerceService/2011-08-01' },
-//      OperationRequest: [ [Object] ],
-//      Items: [ [Object] ] } }
+});
+
+
+
+router.get('/item/:id',function(req, res) {
+
+var id = req.params.id;   
+
+
+client.itemLookup({  
+  'ItemId': id,
+  'ResponseGroup': 'ItemAttributes,Images'
+}).then(function(results){
+  res.send(results)
+  //console.log(results);
+}).catch(function(err){
+  //console.log(err);
+ res.send(err);
+  
+});
+
+});
+
+
+
+
+
+
+
+server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
+  var addr = server.address();
+  console.log("Chat server listening at", addr.address + ":" + addr.port);
+});
+
+
+
+
+

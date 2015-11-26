@@ -12,6 +12,17 @@ var client = amazon.createClient({
   awsTag: "gettianemcom-20"
 });
 
+
+
+router.get('/',function(req, res) {
+
+res.send("Amazon Giving Tree Api");
+
+});
+
+
+
+
 router.get('/search/:category/:title/:pageamount',function(req, res) {
 
 var category = req.params.category;   

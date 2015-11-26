@@ -10,9 +10,7 @@
     "express": "~3.2.4",
     "socket.io": "~0.9.14"
   }
-}
 
-{
   "name": "amazon-product-api",
   "version": "0.3.5",
   "description": "Amazon Product Advertising API client",

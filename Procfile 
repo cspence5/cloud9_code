@@ -1,1 +1,1 @@
-web: node amazon2.js
+web: node server.js

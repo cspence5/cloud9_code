@@ -1,84 +1,31 @@
-//
-// # SimpleServer
-//
-// A simple chat server using Socket.IO, Express, and Async.
-//
-var http = require('http');
-var path = require('path');
+var util = require('util'),
+    OperationHelper = require('apac').OperationHelper;
 
-var async = require('async');
-var socketio = require('socket.io');
-var express = require('express');
-
-//
-// ## SimpleServer `SimpleServer(obj)`
-//
-// Creates a new instance of SimpleServer with the following options:
-//  * `port` - The HTTP port to listen on. If `process.env.PORT` is set, _it overrides this value_.
-//
-var router = express();
-var server = http.createServer(router);
-var io = socketio.listen(server);
-
-router.use(express.static(path.resolve(__dirname, 'client')));
-var messages = [];
-var sockets = [];
-
-io.on('connection', function (socket) {
-    messages.forEach(function (data) {
-      socket.emit('message', data);
-    });
-
-    sockets.push(socket);
-
-    socket.on('disconnect', function () {
-      sockets.splice(sockets.indexOf(socket), 1);
-      updateRoster();
-    });
-
-    socket.on('message', function (msg) {
-      var text = String(msg || '');
-
-      if (!text)
-        return;
-
-      socket.get('name', function (err, name) {
-        var data = {
-          name: name,
-          text: text
-        };
-
-        broadcast('message', data);
-        messages.push(data);
-      });
-    });
-
-    socket.on('identify', function (name) {
-      socket.set('name', String(name || 'Anonymous'), function (err) {
-        updateRoster();
-      });
-    });
-  });
-
-function updateRoster() {
-  async.map(
-    sockets,
-    function (socket, callback) {
-      socket.get('name', callback);
-    },
-    function (err, names) {
-      broadcast('roster', names);
-    }
-  );
-}
-
-function broadcast(event, data) {
-  sockets.forEach(function (socket) {
-    socket.emit(event, data);
-  });
-}
-
-server.listen(process.env.PORT || 3000, process.env.IP || "0.0.0.0", function(){
-  var addr = server.address();
-  console.log("Chat server listening at", addr.address + ":" + addr.port);
+var opHelper = new OperationHelper({
+    awsId:     'AKIAIIDSBRMGX3J6CM3A',
+    awsSecret: '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',
+    assocId:   'gettianemcom-20',
+    // xml2jsOptions: an extra, optional, parameter for if you want to pass additional options for the xml2js module. (see https://github.com/Leonidas-from-XIV/node-xml2js#options)
+    version:   '2013-08-01'
+    // your version of using product advertising api, default: 2013-08-01
 });
+
+
+// execute(operation, params, callback)
+// operation: select from http://docs.aws.amazon.com/AWSECommerceService/latest/DG/SummaryofA2SOperations.html
+// params: parameters for operation (optional)
+// callback(err, parsed, raw): callback function handling results. err = potential errors raised from xml2js.parseString() or http.request(). parsed = xml2js parsed response. raw = raw xml response.
+
+opHelper.execute('ItemSearch', {
+  'SearchIndex': 'Books',
+  'Keywords': 'harry potter',
+  'ResponseGroup': 'ItemAttributes,Images'
+}, function(err, results) { // you can add a third parameter for the raw xml response, "results" here are currently parsed using xml2js
+    console.log(results);
+});
+
+// output:
+// { ItemSearchResponse: 
+//    { '$': { xmlns: 'http://webservices.amazon.com/AWSECommerceService/2011-08-01' },
+//      OperationRequest: [ [Object] ],
+//      Items: [ [Object] ] } }

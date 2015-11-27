@@ -16,7 +16,17 @@ var client = amazon.createClient({
 
 router.get('/',function(req, res) {
 
-res.send("Amazon Giving Tree Api");
+var instructions = "   Welcome to the Amazon Giving Tree Api" +
+                    " "   +
+                    "  Use the URL as a request to search for items on Amazon " +
+                     " You can search for items based on title and category(returns many) or item id(returns specific item) " +
+                     " Example category:  " +
+                     " https://amazon-givingtree-api.herokuapp.com/search/Eletronics/32inchtv/1                   ";
+                       
+                     
+                     
+
+res.send(instructions);
 
 });
 
@@ -31,14 +41,14 @@ var pageamount = req.params.pageamount;
 
 client.itemSearch({  
   'SearchIndex': category,
-  'Title': title,
+  'Keywords': title,
   'ItemPage' : pageamount,
   'ResponseGroup': 'ItemAttributes,Images'
 }).then(function(results){
  
-  JSON.stringify(results, null, 4);
-  res.send(results);
-  console.log(results);
+
+  res.send(JSON.stringify(results, null, 4));
+  //console.log(results);
 }).catch(function(err){
   //console.log(err);
  res.send(err);

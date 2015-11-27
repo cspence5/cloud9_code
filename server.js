@@ -35,7 +35,9 @@ client.itemSearch({
   'ItemPage' : pageamount,
   'ResponseGroup': 'ItemAttributes,Images'
 }).then(function(results){
-  res.json(results);
+ 
+  JSON.stringify(results);
+  res.send(results);
   //console.log(results);
 }).catch(function(err){
   //console.log(err);

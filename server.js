@@ -36,7 +36,7 @@ client.itemSearch({
   'ResponseGroup': 'ItemAttributes,Images'
 }).then(function(results){
  
-  JSON.stringify(results);
+  JSON.stringify(results, null, 4);
   res.send(results);
   //console.log(results);
 }).catch(function(err){

@@ -15,26 +15,35 @@ var client = amazon.createClient({
 
 
 router.get('/',function(req, res) {
-
-var instructions = "   Welcome to the Amazon Giving Tree Api \n" +
-                    " \n"   +
-                    "  Use the URL as a request to search for items on Amazon \n" +
-                     " You can search for items based on title and category(returns many) or item id(returns specific item) \n" +
-                     " Example search:  \n"  
-                     " https://amazon-givingtree-api.herokuapp.com/search/Electronics/32-inch-tv/1                  \n" +
-                     " /search/[category]/[keywords]/[number of pages of data to return(up to 10)] \n" +
-                     " use search to retrieve ASIN # \n" +
-                     " \n" +
+  res.writeHead(200, {"Content-Type": "text/plain"});
+var instructions = "   Welcome to the Amazon Giving Tree Api" +
+                    "\n"   +
+                    "\n"   +
+                    
+                    "  Use the URL as a request to search for items on Amazon\n" +
+                     " You can search for items based on title and category(returns many) or item id(returns specific item)\n" +
+                     " Example search:\n"  +
+                      "\n" +
+                     " https://amazon-givingtree-api.herokuapp.com/search/Electronics/32-inch-tv/1\n" +
+                      "\n" +
+                     " /search/[category]/[keywords]/[number of pages of data to return(up to 10)]\n" +
+                      "\n" +
+                     " use search to retrieve ASIN #\n" +
+                     "\n" +
+                      "\n" +
                      " Look up specific item using ASIN #\n" +
-                     " Example itemlookup \n" +
-                     " https://amazon-givingtree-api.herokuapp.com/item/B00U9U8RZQ \n" +
+                      "\n" +
+                     " Example itemlookup\n" +
+                      "\n" +
+                     " https://amazon-givingtree-api.herokuapp.com/item/B00U9U8RZQ\n" +
+                      "\n" +
                      " /item/[ASIN#]"
                      
                        
                      
                      
 
-res.send(instructions);
+res.end(instructions);
 
 });
 

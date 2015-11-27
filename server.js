@@ -38,7 +38,7 @@ client.itemSearch({
  
   JSON.stringify(results, null, 4);
   res.send(results);
-  //console.log(results);
+  console.log(results);
 }).catch(function(err){
   //console.log(err);
  res.send(err);

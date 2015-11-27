@@ -35,7 +35,7 @@ client.itemSearch({
   'ItemPage' : pageamount,
   'ResponseGroup': 'ItemAttributes,Images'
 }).then(function(results){
-  res.send(results)
+  res.json(results);
   //console.log(results);
 }).catch(function(err){
   //console.log(err);
@@ -56,7 +56,7 @@ client.itemLookup({
   'ItemId': id,
   'ResponseGroup': 'ItemAttributes,Images'
 }).then(function(results){
-  res.send(results)
+  res.json(results);
   //console.log(results);
 }).catch(function(err){
   //console.log(err);

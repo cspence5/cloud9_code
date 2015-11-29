@@ -1,5 +1,5 @@
-var amazon = require('amazon-product-api');
-  //, cors = require('cors')
+var amazon = require('amazon-product-api')
+  , cors = require('cors');
 var http = require('http');
 var express = require('express');
 var router = express();
@@ -13,6 +13,8 @@ var client = amazon.createClient({
   awsTag: "gettianemcom-20"
 });
 
+router.use(cors({credentials: true, origin: true}));
+/*
 router.all('/*', function(req, res, next){
    // CORS headers
    res.header("Access-Control-Allow-Origin", "*"); // restrict it to the required domain
@@ -26,6 +28,7 @@ router.all('/*', function(req, res, next){
        next();
    }
 });
+*/
 
 router.get('/',function(req, res) {
   res.writeHead(200, {"Content-Type": "text/plain"});

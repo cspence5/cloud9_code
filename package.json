@@ -6,11 +6,10 @@
   "repository": "",
   "author": "Mostafa Eweda <mo.eweda@gmail.com>",
   "dependencies": {
+    "amazon-product-api": "~0.3.5",
     "async": "~0.2.8",
+    "cors": "^2.7.1",
     "express": "~3.2.4",
-    "socket.io": "~0.9.14",
-    ""
-    "amazon-product-api": "~0.3.5"
+    "socket.io": "~0.9.14"
   }
-
 }
